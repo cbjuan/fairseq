@@ -3,4 +3,5 @@ fastBPE
 sacremoses
 regex
 requests
+subword-nmt
 https://github.com/paperswithcode/sotabench-eval/archive/wmt.zip
