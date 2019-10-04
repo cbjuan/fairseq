@@ -50,7 +50,7 @@ for model_cfg in models:
         if src_lang == model_cfg.src_lang and dst_lang == model_cfg.dst_lang:
             evaluator = model_cfg.get_evaluator(ds)
 
-            for index, (sid, text) in enumerate(tqdm(evaluator.metrics.source_sentences.items())):
+            for index, (sid, text) in enumerate(tqdm(evaluator.metrics.source_segments.items())):
                 translated = model.translate(text)
                 evaluator.add({sid: translated})
                 if evaluator.cache_exists:
