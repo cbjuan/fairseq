@@ -11,13 +11,15 @@ evaluator = WMTEvaluator(
     paper_arxiv_id="1907.06616"
 )
 
-model = torch.hub.load('pytorch/fairseq', 'transformer.wmt19.en-de.single_model', tokenizer='moses', bpe='fastbpe')
+#model = torch.hub.load('pytorch/fairseq', 'transformer.wmt19.en-de.single_model', tokenizer='moses', bpe='fastbpe')
+model = torch.hub.load('pytorch/fairseq', 'transformer.wmt19.en-de', checkpoint_file='model1.pt:model2.pt:model3.pt:model4.pt',
+                       tokenizer='moses', bpe='fastbpe')
 model.to("cuda")
 
-for index, (sid, text) in tqdm(enumerate(evaluator.metrics.source_sentences.items())):
+for index, (sid, text) in enumerate(tqdm(evaluator.metrics.source_sentences.items())):
     translated = model.translate(text)
     evaluator.add({sid: translated})
-    if index == 31 and evaluator.cache_exists:
+    if evaluator.cache_exists:
         break
 
 evaluator.save()
