@@ -31,14 +31,14 @@ datasets = [
 
 models = [
     ModelCfg("ConvS2S", "1705.03122", Language.English, Language.German, 'conv.wmt14.en-de', tokenizer='moses', bpe='subword_nmt'),
-    # ModelCfg(Language.English, Language.German, 'transformer.wmt16.en-de'),
+    # ModelCfg(Language.English, Language.German, 'transformer.wmt16.en-de', checkpoint_file=?),
     # ModelCfg(Language.English, Language.German, 'conv.wmt17.en-de'),
-    # ModelCfg(Language.English, Language.German, 'transformer.wmt18.en-de'),
+    # ModelCfg(Language.English, Language.German, 'transformer.wmt18.en-de', checkpoint_file=?),
     ModelCfg("Facebook-FAIR (single)", "1907.06616", Language.English, Language.German, 'transformer.wmt19.en-de.single_model', tokenizer='moses', bpe='fastbpe'),
-    ModelCfg("Facebook-FAIR (ensemble)", "1907.06616", Language.English, Language.German, 'transformer.wmt19.en-de', tokenizer='moses', bpe='fastbpe'),
+    # ModelCfg("Facebook-FAIR (ensemble)", "1907.06616", Language.English, Language.German, 'transformer.wmt19.en-de', tokenizer='moses', bpe='fastbpe', checkpoint_file='model1.pt:model2.pt:model3.pt:model4.pt'),
 
     ModelCfg("ConvS2S", "1705.03122v3", Language.English, Language.French, 'conv.wmt14.en-fr', tokenizer='moses', bpe='subword_nmt'),
-    ModelCfg("Transformer Big", "1806.00187", Language.English, Language.French, 'transformer.wmt14.en-fr', tokenizer='moses', bpe='fastbpe'),
+    #ModelCfg("Transformer Big", "1806.00187", Language.English, Language.French, 'transformer.wmt14.en-fr', tokenizer='moses', bpe='fastbpe', checkpoint_file=?),
 ]
 
 
