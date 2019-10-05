@@ -23,9 +23,7 @@ class ModelCfg:
         )
 
     def load_model(self):
-        model = torch.hub.load('pytorch/fairseq', self.hubname, beam=self.beam, **self.params)
-        model.to("cuda")
-        return model
+        return torch.hub.load('pytorch/fairseq', self.hubname, force_reload=True, beam=self.beam, **self.params).cuda()
 
 
 def translate_batch(model, sids, sentences, beam=5):
@@ -72,10 +70,10 @@ models = [
     # ModelCfg(Language.English, Language.German, 'transformer.wmt18.en-de', checkpoint_file=?),
 
     ModelCfg("Facebook-FAIR (single)", "1907.06616", Language.English, Language.German,
-             'transformer.wmt19.en-de.single_model', 50, 64, tokenizer='moses', bpe='fastbpe'),
+             'transformer.wmt19.en-de.single_model', 50, 20, tokenizer='moses', bpe='fastbpe'),
 
     ModelCfg("Facebook-FAIR (ensemble)", "1907.06616", Language.English, Language.German,
-             'transformer.wmt19.en-de', 50, 64, tokenizer='moses', bpe='fastbpe',
+             'transformer.wmt19.en-de', 50, 5, tokenizer='moses', bpe='fastbpe',
              checkpoint_file='model1.pt:model2.pt:model3.pt:model4.pt'),
 
     # English -> French models
