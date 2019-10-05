@@ -51,7 +51,7 @@ for model_cfg in models:
             evaluator = model_cfg.get_evaluator(ds)
 
             for index, (sid, text) in enumerate(tqdm(evaluator.metrics.source_segments.items())):
-                translated = model.translate(text)
+                translated = model.translate(text, beam=50)
                 evaluator.add({sid: translated})
                 if evaluator.cache_exists:
                     break
