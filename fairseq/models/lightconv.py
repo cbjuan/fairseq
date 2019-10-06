@@ -46,6 +46,16 @@ class LightConvModel(FairseqEncoderDecoderModel):
         :ref: fairseq.models.lightconv_parser
         :prog:
     """
+    @classmethod
+    def hub_models(cls):
+        # fmt: off
+        return {
+            'lightconv.wmt16.en-de.noglu': 'https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt16.en-de.joined-dict.lightconv.tar.bz2',
+            'lightconv.wmt16.en-de': 'https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt16.en-de.joined-dict.lightconv-glu.tar.bz2',
+            'dynamicconv.wmt16.en-de.noglu': 'https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt16.en-de.joined-dict.dynamicconv.tar.bz2',
+            'dynamicconv.wmt16.en-de': 'https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt16.en-de.joined-dict.dynamicconv-glu.tar.bz2',
+        }
+        # fmt: on
 
     def __init__(self, encoder, decoder):
         super().__init__(encoder, decoder)

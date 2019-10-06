@@ -4,7 +4,7 @@ from collections import OrderedDict
 from sotabencheval.machine_translation import WMTEvaluator, WMTDataset, Language
 from fairseq import utils
 from tqdm import tqdm
-import torch
+import hubconf
 
 
 class ModelCfg:
@@ -23,7 +23,9 @@ class ModelCfg:
         )
 
     def load_model(self):
-        return torch.hub.load('pytorch/fairseq', self.hubname, force_reload=True, beam=self.beam, **self.params).cuda()
+        # similar to torch.hub.load, but makes sure to load hubconf from the current commit
+        load = getattr(hubconf, self.hubname)
+        return load(beam=self.beam, **self.params).cuda()
 
 
 def translate_batch(model, sids, sentences, beam=5):
@@ -69,20 +71,29 @@ models = [
     # ModelCfg(Language.English, Language.German, 'conv.wmt17.en-de'),
     # ModelCfg(Language.English, Language.German, 'transformer.wmt18.en-de', checkpoint_file=?),
 
+    ModelCfg("LightConv (without GLUs)", "1901.10430", Language.English, Language.German, 'lightconv.wmt16.en-de.noglu',
+             5, 128, tokenizer='moses', bpe='subword_nmt'),
+    ModelCfg("DynamicConv (without GLUs)", "1901.10430", Language.English, Language.German,
+             'dynamicconv.wmt16.en-de.noglu',
+             5, 128, tokenizer='moses', bpe='subword_nmt'),
+    ModelCfg("LightConv", "1901.10430", Language.English, Language.German, 'lightconv.wmt16.en-de',
+             5, 128, tokenizer='moses', bpe='subword_nmt'),
+    ModelCfg("DynamicConv", "1901.10430", Language.English, Language.German, 'dynamicconv.wmt16.en-de',
+             5, 128, tokenizer='moses', bpe='subword_nmt'),
+
     ModelCfg("Facebook-FAIR (single)", "1907.06616", Language.English, Language.German,
              'transformer.wmt19.en-de.single_model', 50, 20, tokenizer='moses', bpe='fastbpe'),
 
     ModelCfg("Facebook-FAIR (ensemble)", "1907.06616", Language.English, Language.German,
-             'transformer.wmt19.en-de', 50, 5, tokenizer='moses', bpe='fastbpe',
+             'transformer.wmt19.en-de', 50, 4, tokenizer='moses', bpe='fastbpe',
              checkpoint_file='model1.pt:model2.pt:model3.pt:model4.pt'),
 
     # English -> French models
     ModelCfg("ConvS2S", "1705.03122v3", Language.English, Language.French,
              'conv.wmt14.en-fr', 5, 128, tokenizer='moses', bpe='subword_nmt'),
-#    ModelCfg("Transformer Big", "1806.00187", Language.English, Language.French,
-#             'transformer.wmt14.en-fr', 50, 64, tokenizer='moses', bpe='fastbpe'),
+    ModelCfg("Transformer Big", "1806.00187", Language.English, Language.French,
+             'transformer.wmt14.en-fr', 50, 20, tokenizer='moses', bpe='fastbpe'),
 ]
-
 
 for model_cfg in models:
     print("Evaluating model {} ({} -> {})".
