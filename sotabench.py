@@ -8,9 +8,10 @@ import hubconf
 
 
 class ModelCfg:
-    def __init__(self, model_name, arxiv_id, src_lang, dst_lang, hubname, beam, batch_size, **kwargs):
+    def __init__(self, model_name, arxiv_id, src_lang, dst_lang, hubname, beam, batch_size, description=None, **kwargs):
         self.model_name, self.arxiv_id, self.src_lang, self.dst_lang = model_name, arxiv_id, src_lang, dst_lang
-        self.hubname, self.beam, self.batch_size, self.params = hubname, beam, batch_size, kwargs
+        self.hubname, self.beam, self.batch_size, self.description = hubname, beam, batch_size, description
+        self.params = kwargs
 
     def get_evaluator(self, dataset):
         return WMTEvaluator(
@@ -19,7 +20,8 @@ class ModelCfg:
             target_lang=self.dst_lang,
             local_root="data/nlp/wmt",
             model_name=self.model_name,
-            paper_arxiv_id=self.arxiv_id
+            paper_arxiv_id=self.arxiv_id,
+            model_description=self.description
         )
 
     def load_model(self):
@@ -69,30 +71,31 @@ models = [
 
     # ModelCfg(Language.English, Language.German, 'transformer.wmt16.en-de', checkpoint_file=?),
     # ModelCfg(Language.English, Language.German, 'conv.wmt17.en-de'),
-    # ModelCfg(Language.English, Language.German, 'transformer.wmt18.en-de', checkpoint_file=?),
 
     ModelCfg("LightConv (without GLUs)", "1901.10430", Language.English, Language.German, 'lightconv.wmt16.en-de.noglu',
              5, 128, tokenizer='moses', bpe='subword_nmt'),
-    ModelCfg("DynamicConv (without GLUs)", "1901.10430", Language.English, Language.German,
-             'dynamicconv.wmt16.en-de.noglu',
+    ModelCfg("DynamicConv (without GLUs)", "1901.10430", Language.English, Language.German, 'dynamicconv.wmt16.en-de.noglu',
              5, 128, tokenizer='moses', bpe='subword_nmt'),
     ModelCfg("LightConv", "1901.10430", Language.English, Language.German, 'lightconv.wmt16.en-de',
              5, 128, tokenizer='moses', bpe='subword_nmt'),
     ModelCfg("DynamicConv", "1901.10430", Language.English, Language.German, 'dynamicconv.wmt16.en-de',
              5, 128, tokenizer='moses', bpe='subword_nmt'),
 
+    ModelCfg("Transformer Big + BT", "1808.09381", Language.English, Language.German, 'transformer.wmt18.en-de',
+             5, 24, tokenizer='moses', bpe='subword_nmt', description="ensemble",
+             checkpoint_file='wmt18.model1.pt:wmt18.model2.pt:wmt18.model3.pt:wmt18.model4.pt:wmt18.model5.pt'),
     ModelCfg("Facebook-FAIR (single)", "1907.06616", Language.English, Language.German,
              'transformer.wmt19.en-de.single_model', 50, 20, tokenizer='moses', bpe='fastbpe'),
 
-    ModelCfg("Facebook-FAIR (ensemble)", "1907.06616", Language.English, Language.German,
-             'transformer.wmt19.en-de', 50, 4, tokenizer='moses', bpe='fastbpe',
+    ModelCfg("Facebook-FAIR (ensemble)", "1907.06616", Language.English, Language.German, 'transformer.wmt19.en-de',
+             50, 4, tokenizer='moses', bpe='fastbpe',
              checkpoint_file='model1.pt:model2.pt:model3.pt:model4.pt'),
 
     # English -> French models
-    ModelCfg("ConvS2S", "1705.03122v3", Language.English, Language.French,
-             'conv.wmt14.en-fr', 5, 128, tokenizer='moses', bpe='subword_nmt'),
-    ModelCfg("Transformer Big", "1806.00187", Language.English, Language.French,
-             'transformer.wmt14.en-fr', 50, 20, tokenizer='moses', bpe='fastbpe'),
+    ModelCfg("ConvS2S", "1705.03122v3", Language.English, Language.French, 'conv.wmt14.en-fr',
+             5, 128, tokenizer='moses', bpe='subword_nmt'),
+    ModelCfg("Transformer Big", "1806.00187", Language.English, Language.French, 'transformer.wmt14.en-fr',
+             50, 20, tokenizer='moses', bpe='fastbpe'),
 ]
 
 for model_cfg in models:
