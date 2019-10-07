@@ -8,10 +8,24 @@ import hubconf
 
 
 class ModelCfg:
-    def __init__(self, model_name, arxiv_id, src_lang, dst_lang, hubname, beam, batch_size, description=None, **kwargs):
+    def __init__(self, model_name, arxiv_id, src_lang, dst_lang, hubname, beam, batch_size, description='', **kwargs):
         self.model_name, self.arxiv_id, self.src_lang, self.dst_lang = model_name, arxiv_id, src_lang, dst_lang
-        self.hubname, self.beam, self.batch_size, self.description = hubname, beam, batch_size, description
+        self.hubname, self.beam, self.batch_size = hubname, beam, batch_size
         self.params = kwargs
+
+        self.description = self._get_description(description)
+
+    def _get_description(self, description):
+        details = []
+        if description:
+            details.append(description)
+
+        ensemble_len = len(self.params.get('checkpoint_file', '').split(':'))
+        if ensemble_len > 1:
+            details.append('ensemble of {} models'.format(ensemble_len))
+        details.append('batch size: {}'.format(self.batch_size))
+        details.append('beam width: {}'.format(self.beam))
+        return ', '.join(details)
 
     def get_evaluator(self, dataset):
         return WMTEvaluator(
@@ -82,7 +96,7 @@ models = [
              5, 128, tokenizer='moses', bpe='subword_nmt'),
 
     ModelCfg("Transformer Big + BT", "1808.09381", Language.English, Language.German, 'transformer.wmt18.en-de',
-             5, 24, tokenizer='moses', bpe='subword_nmt', description="ensemble",
+             5, 24, tokenizer='moses', bpe='subword_nmt',
              checkpoint_file='wmt18.model1.pt:wmt18.model2.pt:wmt18.model3.pt:wmt18.model4.pt:wmt18.model5.pt'),
     ModelCfg("Facebook-FAIR (single)", "1907.06616", Language.English, Language.German,
              'transformer.wmt19.en-de.single_model', 50, 20, tokenizer='moses', bpe='fastbpe'),
@@ -112,6 +126,7 @@ for model_cfg in models:
                 answers = translate_batch(model, sids, texts, beam=model_cfg.beam)
                 evaluator.add(answers)
                 if evaluator.cache_exists:
+                    iter.close()
                     break
 
             evaluator.save()
