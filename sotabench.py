@@ -103,7 +103,7 @@ models = [
 
     ModelCfg("Transformer Big + BT", "1808.09381", Language.English, Language.German, 'transformer.wmt18.en-de',
              batch_size=24, beam=5, tokenizer='moses', bpe='subword_nmt',
-             checkpoint_file='wmt18.model1.pt:wmt18.model2.pt:wmt18.model3.pt:wmt18.model4.pt:wmt18.model5.pt'),
+             checkpoint_file='wmt18.model1.pt:wmt18.model2.pt:wmt18.model3.pt:wmt18.model4.pt:wmt18.model5.pt:wmt18.model6.pt'),
     ModelCfg("Facebook-FAIR (single)", "1907.06616", Language.English, Language.German,
              'transformer.wmt19.en-de.single_model', batch_size=20, beam=50, tokenizer='moses', bpe='fastbpe'),
 
