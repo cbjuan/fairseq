@@ -28,6 +28,9 @@ class ModelCfg:
             details.append('ensemble of {} models'.format(ensemble_len))
         details.append('batch size: {}'.format(self.batch_size))
         details.append('beam width: {}'.format(self.params['beam']))
+        lenpen = self.params.get('lenpen', 1)
+        if lenpen != 1:
+            details.append('length penalty: {:.2f}'.format(lenpen))
         return ', '.join(details)
 
     def get_evaluator(self, model, dataset):
@@ -87,35 +90,57 @@ datasets = [
 models = [
     # English -> German models
     ModelCfg("ConvS2S", "1705.03122", Language.English, Language.German, 'conv.wmt14.en-de',
+             description="trained on WMT14",
              batch_size=128, beam=5, tokenizer='moses', bpe='subword_nmt'),
 
     # ModelCfg(Language.English, Language.German, 'transformer.wmt16.en-de', checkpoint_file=?),
     # ModelCfg(Language.English, Language.German, 'conv.wmt17.en-de'),
 
     ModelCfg("LightConv (without GLUs)", "1901.10430", Language.English, Language.German, 'lightconv.wmt16.en-de.noglu',
+             description="trained on WMT16",
              batch_size=128, beam=5, tokenizer='moses', bpe='subword_nmt'),
     ModelCfg("DynamicConv (without GLUs)", "1901.10430", Language.English, Language.German, 'dynamicconv.wmt16.en-de.noglu',
+             description="trained on WMT16",
              batch_size=128, beam=5, tokenizer='moses', bpe='subword_nmt'),
     ModelCfg("LightConv", "1901.10430", Language.English, Language.German, 'lightconv.wmt16.en-de',
-             batch_size=128, beam=5, tokenizer='moses', bpe='subword_nmt'),
+             description="trained on WMT16",
+             batch_size=128, beam=5, tokenizer='moses', bpe='subword_nmt', lenpen=0.5),
     ModelCfg("DynamicConv", "1901.10430", Language.English, Language.German, 'dynamicconv.wmt16.en-de',
+             description="trained on WMT16",
+             batch_size=128, beam=5, tokenizer='moses', bpe='subword_nmt', lenpen=0.5),
+    ModelCfg("LightConv", "1901.10430", Language.English, Language.German, 'lightconv.wmt17.en-de',
+             description="trained on WMT17",
+             batch_size=128, beam=5, tokenizer='moses', bpe='subword_nmt', lenpen=0.5),
+    ModelCfg("DynamicConv", "1901.10430", Language.English, Language.German, 'dynamicconv.wmt17.en-de',
+             description="trained on WMT17",
              batch_size=128, beam=5, tokenizer='moses', bpe='subword_nmt', lenpen=0.5),
 
     ModelCfg("Transformer Big + BT", "1808.09381", Language.English, Language.German, 'transformer.wmt18.en-de',
+             description="trained on WMT18",
              batch_size=24, beam=5, tokenizer='moses', bpe='subword_nmt',
              checkpoint_file='wmt18.model1.pt:wmt18.model2.pt:wmt18.model3.pt:wmt18.model4.pt:wmt18.model5.pt:wmt18.model6.pt'),
-    ModelCfg("Facebook-FAIR (single)", "1907.06616", Language.English, Language.German,
-             'transformer.wmt19.en-de.single_model', batch_size=20, beam=50, tokenizer='moses', bpe='fastbpe'),
+    ModelCfg("Facebook-FAIR (single)", "1907.06616", Language.English, Language.German, 'transformer.wmt19.en-de.single_model',
+             description="trained on WMT19",
+             batch_size=20, beam=50, tokenizer='moses', bpe='fastbpe'),
 
     ModelCfg("Facebook-FAIR (ensemble)", "1907.06616", Language.English, Language.German, 'transformer.wmt19.en-de',
+             description="trained on WMT19",
              batch_size=4, beam=50, tokenizer='moses', bpe='fastbpe',
              checkpoint_file='model1.pt:model2.pt:model3.pt:model4.pt'),
 
     # English -> French models
     ModelCfg("ConvS2S", "1705.03122v3", Language.English, Language.French, 'conv.wmt14.en-fr',
+             description="trained on WMT14",
              batch_size=128, beam=5, tokenizer='moses', bpe='subword_nmt'),
     ModelCfg("Transformer Big", "1806.00187", Language.English, Language.French, 'transformer.wmt14.en-fr',
+             description="trained on WMT14",
              batch_size=20, beam=50, tokenizer='moses', bpe='fastbpe'),
+    ModelCfg("LightConv", "1901.10430", Language.English, Language.German, 'lightconv.wmt14.en-fr',
+             description="trained on WMT14",
+             batch_size=128, beam=5, tokenizer='moses', bpe='subword_nmt', lenpen=0.9),
+    ModelCfg("DynamicConv", "1901.10430", Language.English, Language.German, 'dynamicconv.wmt14.en-fr',
+             description="trained on WMT14",
+             batch_size=128, beam=5, tokenizer='moses', bpe='subword_nmt', lenpen=0.9),
 ]
 
 for model_cfg in models:

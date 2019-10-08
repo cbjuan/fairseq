@@ -52,8 +52,12 @@ class LightConvModel(FairseqEncoderDecoderModel):
         return {
             'lightconv.wmt16.en-de.noglu': 'https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt16.en-de.joined-dict.lightconv.tar.bz2',
             'lightconv.wmt16.en-de': 'https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt16.en-de.joined-dict.lightconv-glu.tar.bz2',
+            'lightconv.wmt17.en-de': 'https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt17.en-de.joined-dict.transformer.light-conv-cuda-glu.tar.gz',
             'dynamicconv.wmt16.en-de.noglu': 'https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt16.en-de.joined-dict.dynamicconv.tar.bz2',
             'dynamicconv.wmt16.en-de': 'https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt16.en-de.joined-dict.dynamicconv-glu.tar.bz2',
+            'dynamicconv.wmt17.en-de': 'https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt17.en-de.joined-dict.transformer.dynamic-conv-cuda-glu.tar.gz',
+            'lightconv.wmt14.en-fr': 'https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt14.en-fr.joined-dict.lightconv-glu.tar.bz2',
+            'dynamicconv.wmt14.en-fr': 'https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt14.en-fr.joined-dict.dynamicconv-glu.tar.bz2',
         }
         # fmt: on
 
