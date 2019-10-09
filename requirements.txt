@@ -4,4 +4,3 @@ sacremoses
 regex
 requests
 subword-nmt
-https://github.com/paperswithcode/sotabench-eval/archive/tok-bleu.zip
